@@ -17,12 +17,13 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::initial(){
-    int r1=std::rand()%SIDE*SIDE,r2=0;
+    int r1=0,r2=0;
     for(int i=0;i<SIDE*SIDE;i++){
         map[i]=0;
     }
     while(r1==r2){
-        r2=std::rand()%SIDE*SIDE;
+        r1=std::rand()%(SIDE*SIDE);
+        r2=std::rand()%(SIDE*SIDE);
     }
     map[r1]=2;
     map[r2]=2;
@@ -45,6 +46,13 @@ void MainWindow::changeLCD(int *map){
     ui->g31->setPixmap(choosepic(map[13]));
     ui->g32->setPixmap(choosepic(map[14]));
     ui->g33->setPixmap(choosepic(map[15]));
+    int score=0;
+    char s[10];
+    for(int i=0;i<SIDE*SIDE;i++){
+        score+=map[i]*map[i];
+    }
+    std::sprintf(s,"%d",score);
+    ui->score->setText(s);
 }
 
 QPixmap& MainWindow::choosepic(int i){
@@ -72,6 +80,18 @@ QPixmap& MainWindow::choosepic(int i){
         break;
     case 128:
         pic.load(":/res/128.png");
+        break;
+    case 256:
+        pic.load(":/res/256.png");
+        break;
+    case 512:
+        pic.load(":/res/512.png");
+        break;
+    case 1024:
+        pic.load(":/res/1024.png");
+        break;
+    case 2048:
+        pic.load(":/res/2048.png");
         break;
     }
     return pic;
@@ -300,4 +320,10 @@ int MainWindow::canmerge(int a,int b){
     }else{
         return 0;
     }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    initial();
+    changeLCD(map);
 }

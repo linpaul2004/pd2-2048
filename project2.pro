@@ -19,8 +19,7 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
-DISTFILES += \
-    2.png
+DISTFILES +=
 
 RESOURCES += \
     resource.qrc

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 #include <cstdlib>
+#include <cstdio>
 #include <ctime>
 #define SIDE 4
 
@@ -31,6 +32,8 @@ private:
 
 protected:
     void keyPressEvent(QKeyEvent *e);
+private slots:
+    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H
