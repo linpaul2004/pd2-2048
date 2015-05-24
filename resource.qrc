@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>2.png</file>
+        <file>0.png</file>
+        <file>4.png</file>
+        <file>8.png</file>
+        <file>16.png</file>
+        <file>32.png</file>
+        <file>64.png</file>
+        <file>128.png</file>
+    </qresource>
+</RCC>

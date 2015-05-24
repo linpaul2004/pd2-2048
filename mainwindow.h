@@ -21,10 +21,13 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    int map[16]={0};
+    int map[16];
     void changeLCD(int *map);
     int canmerge(int a,int b);
     bool changed;
+    QPixmap& choosepic(int i);
+    QPixmap pic;
+    void initial();
 
 protected:
     void keyPressEvent(QKeyEvent *e);
