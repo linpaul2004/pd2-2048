@@ -143,6 +143,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 if(v!=0){
                     map[(row-1)*SIDE+col]=v;
                     map[row*SIDE+col]=0;
+                    changed=true;
                 }
             }
         }
@@ -187,6 +188,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 if(v!=0){
                     map[(row+1)*SIDE+col]=v;
                     map[row*SIDE+col]=0;
+                    changed=true;
                 }
             }
         }
@@ -231,6 +233,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 if(v!=0){
                     map[row*SIDE+col-1]=v;
                     map[row*SIDE+col]=0;
+                    changed=true;
                 }
             }
         }
@@ -275,6 +278,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 if(v!=0){
                     map[row*SIDE+col+1]=v;
                     map[row*SIDE+col]=0;
+                    changed=true;
                 }
             }
         }
