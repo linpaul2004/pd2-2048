@@ -29,6 +29,7 @@ private:
     QPixmap& choosepic(int i);
     QPixmap pic;
     void initial();
+    void rancreate(bool c);
 
 protected:
     void keyPressEvent(QKeyEvent *e);

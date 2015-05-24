@@ -97,6 +97,27 @@ QPixmap& MainWindow::choosepic(int i){
     return pic;
 }
 
+void MainWindow::rancreate(bool c){
+    if(c==true){
+        for(int i=SIDE*SIDE/2;i>=0;i--){
+            if(map[i]==0){
+                if(std::rand()%4==0){
+                    map[i]=2;
+                    return;
+                }
+            }
+        }
+        for(int i=SIDE*SIDE/2+1;i<SIDE*SIDE;i++){
+            if(map[i]==0){
+                if(std::rand()%4==0){
+                    map[i]=2;
+                    return;
+                }
+            }
+        }
+    }
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *e){
     switch(e->key()){
     case Qt::Key_Up:
@@ -140,16 +161,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        if(changed==true){
-            for(int i=0;i<SIDE*SIDE;i++){
-                if(map[i]==0){
-                    if(std::rand()%2){
-                        map[i]=2;
-                        break;
-                    }
-                }
-            }
-        }
+        rancreate(changed);
         changeLCD(map);
         break;
     case Qt::Key_Down:
@@ -193,16 +205,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        if(changed==true){
-            for(int i=0;i<SIDE*SIDE;i++){
-                if(map[i]==0){
-                    if(std::rand()%2){
-                        map[i]=2;
-                        break;
-                    }
-                }
-            }
-        }
+        rancreate(changed);
         changeLCD(map);
         break;
     case Qt::Key_Left:
@@ -246,16 +249,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        if(changed==true){
-            for(int i=0;i<SIDE*SIDE;i++){
-                if(map[i]==0){
-                    if(std::rand()%2){
-                        map[i]=2;
-                        break;
-                    }
-                }
-            }
-        }
+        rancreate(changed);
         changeLCD(map);
         break;
     case Qt::Key_Right:
@@ -299,16 +293,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        if(changed==true){
-            for(int i=0;i<SIDE*SIDE;i++){
-                if(map[i]==0){
-                    if(std::rand()%2){
-                        map[i]=2;
-                        break;
-                    }
-                }
-            }
-        }
+        rancreate(changed);
         changeLCD(map);
         break;
     }
