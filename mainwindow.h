@@ -24,6 +24,7 @@ private:
     int map[16]={0};
     void changeLCD(int *map);
     int canmerge(int a,int b);
+    bool changed;
 
 protected:
     void keyPressEvent(QKeyEvent *e);
