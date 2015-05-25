@@ -99,19 +99,93 @@ QPixmap& MainWindow::choosepic(int i){
 
 void MainWindow::rancreate(bool c){
     if(c==true){
-        for(int i=SIDE*SIDE/2;i>=0;i--){
-            if(map[i]==0){
-                if(std::rand()%4==0){
-                    map[i]=2;
-                    return;
+        while(1){
+            for(int i=SIDE*SIDE/2;i>=0;i--){
+                if(map[i]==0){
+                    if(std::rand()%4==0){
+                        map[i]=2;
+                        return;
+                    }
+                }
+            }
+            for(int i=SIDE*SIDE/2+1;i<SIDE*SIDE;i++){
+                if(map[i]==0){
+                    if(std::rand()%4==0){
+                        map[i]=2;
+                        return;
+                    }
                 }
             }
         }
-        for(int i=SIDE*SIDE/2+1;i<SIDE*SIDE;i++){
-            if(map[i]==0){
-                if(std::rand()%4==0){
-                    map[i]=2;
-                    return;
+    }
+}
+
+void MainWindow::toleft(){
+    for(int row=0;row<SIDE;row++){
+        for(int col=1;col<SIDE;col++){
+            if(map[row*SIDE+col]!=0){
+                for(int i=col;i>0;i--){
+                    if(map[row*SIDE+i-1]==0){
+                        map[row*SIDE+i-1]=map[row*SIDE+i];
+                        map[row*SIDE+i]=0;
+                        changed=true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::toright(){
+    for(int row=0;row<SIDE;row++){
+        for(int col=SIDE-2;col>=0;col--){
+            if(map[row*SIDE+col]!=0){
+                for(int i=col;i<SIDE-1;i++){
+                    if(map[row*SIDE+i+1]==0){
+                        map[row*SIDE+i+1]=map[row*SIDE+i];
+                        map[row*SIDE+i]=0;
+                        changed=true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::toup(){
+    for(int row=1;row<SIDE;row++){
+        for(int col=0;col<SIDE;col++){
+            if(map[row*SIDE+col]!=0){
+                for(int i=row;i>0;i--){
+                    if(map[(i-1)*SIDE+col]==0){
+                        map[(i-1)*SIDE+col]=map[i*SIDE+col];
+                        map[i*SIDE+col]=0;
+                        changed=true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::todown(){
+    for(int row=SIDE-2;row>=0;row--){
+        for(int col=0;col<SIDE;col++){
+            if(map[row*SIDE+col]!=0){
+                for(int i=row;i<SIDE-1;i++){
+                    if(map[(i+1)*SIDE+col]==0){
+                        map[(i+1)*SIDE+col]=map[i*SIDE+col];
+                        map[i*SIDE+col]=0;
+                        changed=true;
+                    }else{
+                        break;
+                    }
                 }
             }
         }
@@ -122,21 +196,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
     switch(e->key()){
     case Qt::Key_Up:
         changed=false;
-        for(int row=1;row<SIDE;row++){
-            for(int col=0;col<SIDE;col++){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=row;i>0;i--){
-                        if(map[(i-1)*SIDE+col]==0){
-                            map[(i-1)*SIDE+col]=map[i*SIDE+col];
-                            map[i*SIDE+col]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        toup();
         for(int row=1;row<SIDE;row++){
             for(int col=0;col<SIDE;col++){
                 int v=canmerge(map[row*SIDE+col],map[(row-1)*SIDE+col]);
@@ -147,41 +207,13 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        for(int row=1;row<SIDE;row++){
-            for(int col=0;col<SIDE;col++){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=row;i>0;i--){
-                        if(map[(i-1)*SIDE+col]==0){
-                            map[(i-1)*SIDE+col]=map[i*SIDE+col];
-                            map[i*SIDE+col]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        toup();
         rancreate(changed);
         changeLCD(map);
         break;
     case Qt::Key_Down:
         changed=false;
-        for(int row=SIDE-2;row>=0;row--){
-            for(int col=0;col<SIDE;col++){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=row;i<SIDE-1;i++){
-                        if(map[(i+1)*SIDE+col]==0){
-                            map[(i+1)*SIDE+col]=map[i*SIDE+col];
-                            map[i*SIDE+col]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        todown();
         for(int row=SIDE-2;row>=0;row--){
             for(int col=0;col<SIDE;col++){
                 int v=canmerge(map[row*SIDE+col],map[(row+1)*SIDE+col]);
@@ -192,41 +224,13 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        for(int row=SIDE-2;row>=0;row--){
-            for(int col=0;col<SIDE;col++){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=row;i<SIDE-1;i++){
-                        if(map[(i+1)*SIDE+col]==0){
-                            map[(i+1)*SIDE+col]=map[i*SIDE+col];
-                            map[i*SIDE+col]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        todown();
         rancreate(changed);
         changeLCD(map);
         break;
     case Qt::Key_Left:
         changed=false;
-        for(int row=0;row<SIDE;row++){
-            for(int col=1;col<SIDE;col++){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=col;i>0;i--){
-                        if(map[row*SIDE+i-1]==0){
-                            map[row*SIDE+i-1]=map[row*SIDE+i];
-                            map[row*SIDE+i]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        toleft();
         for(int row=0;row<SIDE;row++){
             for(int col=1;col<SIDE;col++){
                 int v=canmerge(map[row*SIDE+col],map[row*SIDE+col-1]);
@@ -237,41 +241,13 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        for(int row=0;row<SIDE;row++){
-            for(int col=1;col<SIDE;col++){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=col;i>0;i--){
-                        if(map[row*SIDE+i-1]==0){
-                            map[row*SIDE+i-1]=map[row*SIDE+i];
-                            map[row*SIDE+i]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        toleft();
         rancreate(changed);
         changeLCD(map);
         break;
     case Qt::Key_Right:
         changed=false;
-        for(int row=0;row<SIDE;row++){
-            for(int col=SIDE-2;col>=0;col--){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=col;i<SIDE-1;i++){
-                        if(map[row*SIDE+i+1]==0){
-                            map[row*SIDE+i+1]=map[row*SIDE+i];
-                            map[row*SIDE+i]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        toright();
         for(int row=0;row<SIDE;row++){
             for(int col=SIDE-2;col>=0;col--){
                 int v=canmerge(map[row*SIDE+col],map[row*SIDE+col+1]);
@@ -282,21 +258,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
                 }
             }
         }
-        for(int row=0;row<SIDE;row++){
-            for(int col=SIDE-2;col>=0;col--){
-                if(map[row*SIDE+col]!=0){
-                    for(int i=col;i<SIDE-1;i++){
-                        if(map[row*SIDE+i+1]==0){
-                            map[row*SIDE+i+1]=map[row*SIDE+i];
-                            map[row*SIDE+i]=0;
-                            changed=true;
-                        }else{
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+        toright();
         rancreate(changed);
         changeLCD(map);
         break;
@@ -311,8 +273,98 @@ int MainWindow::canmerge(int a,int b){
     }
 }
 
+bool MainWindow::checkfinish(){
+    changed=false;
+    for(int row=1;row<SIDE;row++){
+        for(int col=0;col<SIDE;col++){
+            int v=canmerge(map[row*SIDE+col],map[(row-1)*SIDE+col]);
+            if(v!=0){
+                return true;
+            }
+        }
+    }
+    for(int row=SIDE-2;row>=0;row--){
+        for(int col=0;col<SIDE;col++){
+            int v=canmerge(map[row*SIDE+col],map[(row+1)*SIDE+col]);
+            if(v!=0){
+                return true;
+            }
+        }
+    }
+    for(int row=0;row<SIDE;row++){
+        for(int col=SIDE-2;col>=0;col--){
+            int v=canmerge(map[row*SIDE+col],map[row*SIDE+col+1]);
+            if(v!=0){
+                return true;
+            }
+        }
+    }
+    for(int row=0;row<SIDE;row++){
+        for(int col=1;col<SIDE;col++){
+            int v=canmerge(map[row*SIDE+col],map[row*SIDE+col-1]);
+            if(v!=0){
+                return true;
+            }
+        }
+    }
+    for(int row=0;row<SIDE;row++){
+        for(int col=1;col<SIDE;col++){
+            if(map[row*SIDE+col]!=0){
+                for(int i=col;i>0;i--){
+                    if(map[row*SIDE+i-1]==0){
+                        return true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    for(int row=0;row<SIDE;row++){
+        for(int col=SIDE-2;col>=0;col--){
+            if(map[row*SIDE+col]!=0){
+                for(int i=col;i<SIDE-1;i++){
+                    if(map[row*SIDE+i+1]==0){
+                        return true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    for(int row=1;row<SIDE;row++){
+        for(int col=0;col<SIDE;col++){
+            if(map[row*SIDE+col]!=0){
+                for(int i=row;i>0;i--){
+                    if(map[(i-1)*SIDE+col]==0){
+                        return true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    for(int row=SIDE-2;row>=0;row--){
+        for(int col=0;col<SIDE;col++){
+            if(map[row*SIDE+col]!=0){
+                for(int i=row;i<SIDE-1;i++){
+                    if(map[(i+1)*SIDE+col]==0){
+                        return true;
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     initial();
     changeLCD(map);
 }
+

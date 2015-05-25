@@ -30,6 +30,8 @@ private:
     QPixmap pic;
     void initial();
     void rancreate(bool c);
+    void toleft(),toright(),toup(),todown();
+    bool checkfinish();
 
 protected:
     void keyPressEvent(QKeyEvent *e);
