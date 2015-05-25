@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     initial();
     changeLCD(map);
+    r=new Result(this);
+    connect(this,SIGNAL(result_window(int,bool)),r,SLOT(initial(int,bool)));
 }
 
 MainWindow::~MainWindow()
@@ -43,6 +45,24 @@ void MainWindow::changeLCD(int *map){
         score+=map[i]*map[i];
     }
     ui->score->setNum(score);
+    for(int i=0;i<SIDE*SIDE;i++){
+        if(map[i]==2048){
+            emit result_window(score,true);
+            r->setModal(true);
+            r->exec();
+            initial();
+            changeLCD(map);
+            return;
+        }
+    }
+    if(checkfinish()){
+        emit result_window(score,false);
+        r->setModal(true);
+        r->exec();
+        initial();
+        changeLCD(map);
+        return;
+    }
 }
 
 QPixmap& MainWindow::choosepic(int i){
@@ -229,12 +249,11 @@ int MainWindow::canmerge(int a,int b){
 }
 
 bool MainWindow::checkfinish(){
-    changed=false;
     for(int row=1;row<SIDE;row++){
         for(int col=0;col<SIDE;col++){
             int v=canmerge(map[row*SIDE+col],map[(row-1)*SIDE+col]);
             if(v!=0){
-                return true;
+                return false;
             }
         }
     }
@@ -242,7 +261,7 @@ bool MainWindow::checkfinish(){
         for(int col=0;col<SIDE;col++){
             int v=canmerge(map[row*SIDE+col],map[(row+1)*SIDE+col]);
             if(v!=0){
-                return true;
+                return false;
             }
         }
     }
@@ -250,7 +269,7 @@ bool MainWindow::checkfinish(){
         for(int col=SIDE-2;col>=0;col--){
             int v=canmerge(map[row*SIDE+col],map[row*SIDE+col+1]);
             if(v!=0){
-                return true;
+                return false;
             }
         }
     }
@@ -258,7 +277,7 @@ bool MainWindow::checkfinish(){
         for(int col=1;col<SIDE;col++){
             int v=canmerge(map[row*SIDE+col],map[row*SIDE+col-1]);
             if(v!=0){
-                return true;
+                return false;
             }
         }
     }
@@ -267,7 +286,7 @@ bool MainWindow::checkfinish(){
             if(map[row*SIDE+col]!=0){
                 for(int i=col;i>0;i--){
                     if(map[row*SIDE+i-1]==0){
-                        return true;
+                        return false;
                     }else{
                         break;
                     }
@@ -280,7 +299,7 @@ bool MainWindow::checkfinish(){
             if(map[row*SIDE+col]!=0){
                 for(int i=col;i<SIDE-1;i++){
                     if(map[row*SIDE+i+1]==0){
-                        return true;
+                        return false;
                     }else{
                         break;
                     }
@@ -293,7 +312,7 @@ bool MainWindow::checkfinish(){
             if(map[row*SIDE+col]!=0){
                 for(int i=row;i>0;i--){
                     if(map[(i-1)*SIDE+col]==0){
-                        return true;
+                        return false;
                     }else{
                         break;
                     }
@@ -306,7 +325,7 @@ bool MainWindow::checkfinish(){
             if(map[row*SIDE+col]!=0){
                 for(int i=row;i<SIDE-1;i++){
                     if(map[(i+1)*SIDE+col]==0){
-                        return true;
+                        return false;
                     }else{
                         break;
                     }
@@ -314,7 +333,7 @@ bool MainWindow::checkfinish(){
             }
         }
     }
-    return false;
+    return true;
 }
 
 void MainWindow::on_pushButton_clicked()

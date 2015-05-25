@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <ctime>
 #include <QLabel>
+#include "result.h"
 #define SIDE 4
 
 namespace Ui {
@@ -34,9 +35,12 @@ private:
     void toleft(),toright(),toup(),todown();
     bool checkfinish();
     QLabel *g[SIDE*SIDE];
+    Result *r;
 
 protected:
     void keyPressEvent(QKeyEvent *e);
+signals:
+    result_window(int,bool);
 private slots:
     void on_pushButton_clicked();
 };
