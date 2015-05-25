@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
+#include <QLabel>
 #define SIDE 4
 
 namespace Ui {
@@ -22,7 +23,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    int map[16];
+    int map[SIDE*SIDE];
     void changeLCD(int *map);
     int canmerge(int a,int b);
     bool changed;
@@ -32,6 +33,7 @@ private:
     void rancreate(bool c);
     void toleft(),toright(),toup(),todown();
     bool checkfinish();
+    QLabel *g[SIDE*SIDE];
 
 protected:
     void keyPressEvent(QKeyEvent *e);

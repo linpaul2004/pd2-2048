@@ -7,6 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     std::srand(std::time(NULL));
+    for(int i=0;i<SIDE*SIDE;i++){
+        g[i]=new QLabel(this);
+        g[i]->setGeometry(20+(i%4)*100,120+(i/4)*100,100,100);
+        g[i]->setScaledContents(true);
+    }
     initial();
     changeLCD(map);
 }
@@ -30,70 +35,20 @@ void MainWindow::initial(){
 }
 
 void MainWindow::changeLCD(int *map){
-    ui->g00->setPixmap(choosepic(map[0]));
-    ui->g01->setPixmap(choosepic(map[1]));
-    ui->g02->setPixmap(choosepic(map[2]));
-    ui->g03->setPixmap(choosepic(map[3]));
-    ui->g10->setPixmap(choosepic(map[4]));
-    ui->g11->setPixmap(choosepic(map[5]));
-    ui->g12->setPixmap(choosepic(map[6]));
-    ui->g13->setPixmap(choosepic(map[7]));
-    ui->g20->setPixmap(choosepic(map[8]));
-    ui->g21->setPixmap(choosepic(map[9]));
-    ui->g22->setPixmap(choosepic(map[10]));
-    ui->g23->setPixmap(choosepic(map[11]));
-    ui->g30->setPixmap(choosepic(map[12]));
-    ui->g31->setPixmap(choosepic(map[13]));
-    ui->g32->setPixmap(choosepic(map[14]));
-    ui->g33->setPixmap(choosepic(map[15]));
+    for(int i=0;i<SIDE*SIDE;i++){
+        g[i]->setPixmap(choosepic(map[i]));
+    }
     int score=0;
-    char s[10];
     for(int i=0;i<SIDE*SIDE;i++){
         score+=map[i]*map[i];
     }
-    std::sprintf(s,"%d",score);
-    ui->score->setText(s);
+    ui->score->setNum(score);
 }
 
 QPixmap& MainWindow::choosepic(int i){
-    switch(i){
-    case 0:
-        pic.load(":/res/0.png");
-        break;
-    case 2:
-        pic.load(":/res/2.png");
-        break;
-    case 4:
-        pic.load(":/res/4.png");
-        break;
-    case 8:
-        pic.load(":/res/8.png");
-        break;
-    case 16:
-        pic.load(":/res/16.png");
-        break;
-    case 32:
-        pic.load(":/res/32.png");
-        break;
-    case 64:
-        pic.load(":/res/64.png");
-        break;
-    case 128:
-        pic.load(":/res/128.png");
-        break;
-    case 256:
-        pic.load(":/res/256.png");
-        break;
-    case 512:
-        pic.load(":/res/512.png");
-        break;
-    case 1024:
-        pic.load(":/res/1024.png");
-        break;
-    case 2048:
-        pic.load(":/res/2048.png");
-        break;
-    }
+    char c[25];
+    std::sprintf(c,":/res/%d.png",i);
+    pic.load(c);
     return pic;
 }
 
