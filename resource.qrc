@@ -12,5 +12,6 @@
         <file>512.png</file>
         <file>1024.png</file>
         <file>2048.png</file>
+        <file>-1.png</file>
     </qresource>
 </RCC>

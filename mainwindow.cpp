@@ -32,6 +32,13 @@ void MainWindow::initial(){
         r1=std::rand()%(SIDE*SIDE);
         r2=std::rand()%(SIDE*SIDE);
     }
+    if(ui->checkBox->isChecked()){
+        int r3=std::rand()%(SIDE*SIDE);
+        while(r3==r2 || r3==r1){
+            r3=std::rand()%(SIDE*SIDE);
+        }
+        map[r3]=-1;
+    }
     map[r1]=2;
     map[r2]=2;
 }
@@ -77,7 +84,11 @@ void MainWindow::rancreate(bool c){
         while(1){
             for(int i=SIDE*SIDE/2;i>=0;i--){
                 if(map[i]==0){
-                    if(std::rand()%4==0){
+                    if(std::rand()%5==0){
+                        map[i]=4;
+                        return;
+                    }
+                    if(std::rand()%5==0){
                         map[i]=2;
                         return;
                     }
@@ -85,6 +96,10 @@ void MainWindow::rancreate(bool c){
             }
             for(int i=SIDE*SIDE/2+1;i<SIDE*SIDE;i++){
                 if(map[i]==0){
+                    if(std::rand()%5==0){
+                        map[i]=4;
+                        return;
+                    }
                     if(std::rand()%4==0){
                         map[i]=2;
                         return;
