@@ -43,6 +43,8 @@ signals:
     result_window(int,bool);
 private slots:
     void on_pushButton_clicked();
+    void on_checkBox_clicked();
+    void on_spinBox_valueChanged();
 };
 
 #endif // MAINWINDOW_H

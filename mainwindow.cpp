@@ -32,15 +32,17 @@ void MainWindow::initial(){
         r1=std::rand()%(SIDE*SIDE);
         r2=std::rand()%(SIDE*SIDE);
     }
-    if(ui->checkBox->isChecked()){
-        int r3=std::rand()%(SIDE*SIDE);
-        while(r3==r2 || r3==r1){
-            r3=std::rand()%(SIDE*SIDE);
-        }
-        map[r3]=-1;
-    }
     map[r1]=2;
     map[r2]=2;
+    if(ui->checkBox->isChecked()){
+        int r3=std::rand()%(SIDE*SIDE),n=ui->spinBox->value();
+        while(n--){
+            while(map[r3]==2 || map[r3]==-1){
+                r3=std::rand()%(SIDE*SIDE);
+            }
+            map[r3]=-1;
+        }
+    }
 }
 
 void MainWindow::changeLCD(int *map){
@@ -256,7 +258,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e){
 }
 
 int MainWindow::canmerge(int a,int b){
-    if(a==b){
+    if(a==b && a!=-1 && b!=-1){
         return a+b;
     }else{
         return 0;
@@ -357,3 +359,17 @@ void MainWindow::on_pushButton_clicked()
     changeLCD(map);
 }
 
+
+void MainWindow::on_checkBox_clicked()
+{
+    initial();
+    changeLCD(map);
+}
+
+void MainWindow::on_spinBox_valueChanged()
+{
+    if(ui->checkBox->isChecked()){
+        initial();
+        changeLCD(map);
+    }
+}
